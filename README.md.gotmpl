@@ -23,8 +23,6 @@
   {{ template "chart.typeBadge" . }}
   {{ template "chart.versionBadge" . }}
   {{ template "chart.appVersionBadge" . }}
-  [![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/CrystalNET)](https://artifacthub.io/packages/helm/crystalnet/paperless-ngx)
-
 </div>
 
 
@@ -38,19 +36,15 @@ Paperless-ngx A community-supported supercharged version of paperless: scan, ind
 
 [> More about {{ template "chart.title" . }}]({{ template "chart.homepage" . }})
 
+This is a fork from https://github.com/CrystalNET-org/helm-paperless-ngx, thanks to the maintainers for their work!
+
 ---
 
 ## TL;DR
 
 Direct install via oci://:
 ```shell
-helm install my-release oci://harbor.crystalnet.org/charts/{{ template "chart.name" . }}
-```
-
-install using chartMuseum:
-```shell
-helm repo add crystalnet https://charts.crystalnet.org
-helm install my-release crystalnet/{{ template "chart.name" . }}
+helm install my-release oci://ghcr.io/signed-log/helm-paperless-ngx/{{ template "chart.name" . }}:{{ template "chart.version" . }}
 ```
 
 ## Introduction
@@ -71,16 +65,10 @@ To install the chart with the release name `my-release`:
 
 Direct install via oci://:
 ```shell
-helm install my-release oci://harbor.crystalnet.org/charts/{{ template "chart.name" . }}
+helm install my-release oci://ghcr.io/signed-log/helm-paperless-ngx/{{ template "chart.name" . }}:{{ template "chart.version" . }}
 ```
 
-install using chartMuseum:
-```shell
-helm repo add crystalnet https://charts.crystalnet.org
-helm install my-release crystalnet/{{ template "chart.name" . }}
-```
-
-These commands deploy {{ template "chart.name" . }} on the Kubernetes cluster in the default configuration.
+This command deploy {{ template "chart.name" . }} on the Kubernetes cluster in the default configuration.
 The Parameters section lists the parameters that can be configured during installation.
 
 > **Tip:** List all releases using `helm list`
@@ -272,13 +260,13 @@ The command removes all the Kubernetes components associated with the chart and 
 Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`. For example,
 
 ```shell
-helm install my-release --set fullnameOverride=my-{{ template "chart.name" . }} oci://harbor.crystalnet.org/charts/{{ template "chart.name" . }}
+helm install my-release --set fullnameOverride=my-{{ template "chart.name" . }} oci://ghcr.io/signed-log/helm-paperless-ngx/{{ template "chart.name" . }}:{{ template "chart.version" . }}
 ```
 
 Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
 
 ```shell
-helm install my-release -f values.yaml oci://harbor.crystalnet.org/charts/{{ template "chart.name" . }}
+helm install my-release -f values.yaml oci://ghcr.io/signed-log/helm-paperless-ngx/{{ template "chart.name" . }}:{{ template "chart.version" . }}
 ```
 
 > **Tip:** You can use the default values.yaml
@@ -286,11 +274,7 @@ helm install my-release -f values.yaml oci://harbor.crystalnet.org/charts/{{ tem
 ## License
 
 Licensed under the GNU General Public License v3.0 (the "License"); you may not use this file except in compliance with
-the License. You may obtain a copy of the License at
-
-```
-TBD
-```
+the License. You may obtain a copy of the License at [LICENSE](./LICENSE).
 
 Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an
 "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific

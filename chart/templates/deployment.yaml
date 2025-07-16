@@ -28,11 +28,18 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}-webserver
-          command: 
-          - gunicorn 
-          - -c 
-          - /usr/src/paperless/gunicorn.conf.py
-          - paperless.asgi:application
+          command:
+            - granian
+            - --interface
+            - asginl
+            - --ws
+            - --host
+            - "0.0.0.0"
+            - --port
+            - "8000"
+            - --workers
+            - {{ .Values.config.webserver.workers | default 4 | int | quote }}
+            - paperless.asgi:application
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"

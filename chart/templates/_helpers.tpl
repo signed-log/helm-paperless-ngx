@@ -127,9 +127,16 @@ Create chart environment and make it reusable
 - name: DB_USER
   value: {{ .Values.config.database.mariadb.user | quote }}
 - name: PAPERLESS_DBNAME
-  value: {{ .Values.config.database.mariadb.schema | quote }}
+  value: {{ .Values.config.database.mariadb.database | quote }}
 - name: PAPERLESS_DBPASS
+  {{- if .Values.config.database.mariadb.existing_secret }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.config.database.mariadb.existing_secret.name | quote }}
+      key: {{ .Values.config.database.mariadb.existing_secret.key | default "mariadb-password" | quote }}
+  {{- else }}
   value: {{ .Values.config.database.mariadb.pass | quote }}
+  {{- end }}
 {{- else if .Values.postgresql.enabled }}
 - name: PAPERLESS_DBENGINE
   value: "postgresql"
@@ -146,6 +153,26 @@ Create chart environment and make it reusable
     secretKeyRef:
       name: {{ printf "%s-postgresql" .Release.Name | quote }}
       key: password
+{{- else if contains "postgresql" .Values.config.database.type }}
+- name: PAPERLESS_DBENGINE
+  value: "postgresql"
+- name: PAPERLESS_DBHOST
+  value: {{ .Values.config.database.postgresql.host | quote }}
+- name: PAPERLESS_DBPORT
+  value: {{ .Values.config.database.postgresql.port | quote }}
+- name: DB_USER
+  value: {{ .Values.config.database.postgresql.user | quote }}
+- name: PAPERLESS_DBNAME
+  value: {{ .Values.config.database.postgresql.database | quote }}
+- name: PAPERLESS_DBPASS
+  {{- if .Values.config.database.postgresql.existing_secret }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.config.database.postgresql.existing_secret.name | quote }}
+      key: {{ .Values.config.database.postgresql.existing_secret.key | default "postgresql-password" | quote }}
+  {{- else }}
+  value: {{ .Values.config.database.postgresql.pass | quote }}
+  {{- end }}
 {{- else }}
 - name: PAPERLESS_DBENGINE
   value: ""
