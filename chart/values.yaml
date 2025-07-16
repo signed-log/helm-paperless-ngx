@@ -125,7 +125,7 @@ redis:
   architecture: standalone
   auth:
     # -- enable redis authentication mode
-    enabled: true
+    enabled: false
     # -- password that gets used for the connection between paperless and redis
     password: "changeme"
 
@@ -191,7 +191,7 @@ persistence:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 10Gi
+          storage: 64Gi
 
   log:
     # -- Enable paperless data persistence using `PVC`. (search index, SQLite database, classification model, etc)
@@ -204,7 +204,7 @@ persistence:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 1Gi
+          storage: 2Gi
 
 config:
   auth:
@@ -238,8 +238,26 @@ config:
       host: localhost
       # -- port to connect to
       port: 3306
-      # -- database schema that holds the paperless tables
-      schema: paperless
+      # -- database that holds the paperless tables
+      database:
+      # -- use an pre-existing secret to provide credentials
+      #    it should contain the keys mysql-user and mysql-pass
+      existing_secret:
+      # -- mariadb user to use for our connection
+      user: paperless-user
+      # -- mariadb password to use for our connection
+      pass: password
+
+    # -- only needed when type is postgresql and postgresql.enabled is set to false
+    #    meaning you would use an external already existing mariadb instance
+    # @default -- See [values.yaml](./values.yaml)
+    postgresql:
+      # -- hostname where your external mariadb is reachable
+      host: localhost
+      # -- port to connect to
+      port: 5432
+      # -- database that holds the paperless tables
+      database: paperless
       # -- use an pre-existing secret to provide credentials
       #    it should contain the keys mysql-user and mysql-pass
       existing_secret:
