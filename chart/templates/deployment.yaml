@@ -38,7 +38,7 @@ spec:
             - --port
             - "8000"
             - --workers
-            - "{{ .Values.config.webserver.workers | default 4 | int | quote }}"
+            - {{ .Values.config.webserver.workers | default 4 | int | quote }}
             - paperless.asgi:application
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
