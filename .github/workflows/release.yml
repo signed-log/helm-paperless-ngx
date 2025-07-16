@@ -22,7 +22,7 @@ jobs:
 
       - name: Install helm docs
         run: |
-          go install github.com/norwoodj/helm-docs@latest
+          go install github.com/norwoodj/helm-docs/cmd/helm-docs@latest
           helm-docs --version
 
       - name: Prepare for packaging
@@ -34,6 +34,7 @@ jobs:
       - name: Generate Helm documentation
         run: |
           helm-docs --chart-search-root=chart --template-files=README.md.gotmpl
+          cp chart/README.md README.md
 
       - name: Package Helm Chart
         run: |
